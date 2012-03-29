@@ -1,8 +1,13 @@
+package gui;
+
 /**
  * Tämä luokka on graafinen käyttöliittymä Mastermind-pelille.
  * Käyttöliittymä käyttää luokkia Rivi, PelaajanRivi ja Laskuri.
  */
 
+import sovelluslogiikka.Laskuri;
+import sovelluslogiikka.Rivi;
+import sovelluslogiikka.PelaajanRivi;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -37,6 +42,7 @@ public class Mastermind extends JFrame {
                 matriisi[i][j].setEditable(false);
             }
         
+        
         oikeaRivi = new JTextField[4];
         for(int i=0; i<4; i++) {
             oikeaRivi[i]=new JTextField();
@@ -69,7 +75,6 @@ public class Mastermind extends JFrame {
             for(int b=0; b<4; b++)
                 arvaukset.add(matriisi[a][b]);
         
-        
         JPanel arvattavaRivi = new JPanel(new GridLayout(1,4));
         for(int i=0; i<4; i++)
             arvattavaRivi.add(oikeaRivi[i]);
@@ -93,6 +98,12 @@ public class Mastermind extends JFrame {
         this.add("Center", merkit);
         this.add("West", arvaukset);
         this.add("East", nappulat);
+        
+        
+        arvaukset.setPreferredSize(new Dimension(200, 1));
+        merkit.setPreferredSize(new Dimension(200, 10));
+        arvattavaRivi.setPreferredSize(new Dimension(150, 45));
+        nappulat.setPreferredSize(new Dimension(185, 1));
         
         sininen.addActionListener(
             new ActionListener() {
@@ -257,7 +268,7 @@ public class Mastermind extends JFrame {
         ikkuna.pack();
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ikkuna.setVisible(true);
-        ikkuna.setSize(500, 500);
+        ikkuna.setSize(550, 500);
     }
     
 }

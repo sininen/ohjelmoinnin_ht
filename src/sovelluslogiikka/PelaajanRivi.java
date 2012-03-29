@@ -1,3 +1,5 @@
+package sovelluslogiikka;
+
 
 import java.util.ArrayList;
 

@@ -1,3 +1,5 @@
+package sovelluslogiikka;
+
 
 /**
  * Luokka käsittää hyvin yksinkertaisen laskurin,

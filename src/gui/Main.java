@@ -1,11 +1,15 @@
+package gui;
+
 /**
  * Luokka Main sisältää pääohjelman, 
  * jolla peliä voi testata tekstiversiona. Tässä versiossa 
  * värit ovat numeroita väliltä 1-6.
  */
 
-
 import java.util.Scanner;
+import sovelluslogiikka.Laskuri;
+import sovelluslogiikka.PelaajanRivi;
+import sovelluslogiikka.Rivi;
 
 public class Main {
     private static Scanner lukija= new Scanner(System.in);
