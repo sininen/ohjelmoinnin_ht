@@ -2,11 +2,11 @@ package gui;
 
 /**
  * Tämä luokka on graafinen käyttöliittymä Mastermind-pelille.
- * Käyttöliittymä käyttää luokkia Rivi, PelaajanRivi ja Laskuri.
+ * Käyttöliittymä käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri.
  */
 
 import sovelluslogiikka.Laskuri;
-import sovelluslogiikka.Rivi;
+import sovelluslogiikka.OikeaRivi;
 import sovelluslogiikka.PelaajanRivi;
 import javax.swing.*;
 import java.awt.*;
@@ -14,33 +14,84 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Mastermind extends JFrame {
-
-    private Rivi arvottuRivi;
+    
+    /**
+     * ilmentymä luokasta OikeaRivi, ohjelman arpoma oikea rivi
+     */
+    private OikeaRivi arvottuRivi;
+    /**
+     * ilmentymä luokasta PelaajanRivi, pelaajan arvaama rivi
+     */
     private PelaajanRivi pelaajanRivi;
+    /**
+     * ilmentymä luokasta Laskuri, kierrosLaskuri kierrosten laskemiseen
+     */
     private Laskuri kierrosLaskuri;
     
-    private JTextField[][] matriisi;
+    /**
+     * Taulukko (matriisi) pelaajan arvaamia rivejä.
+     */
+    private JTextField[][] pelaajanArvaukset;
+    /**
+     * Taulukko arvotun rivin eli oikean rivin näyttämiseen.
+     */
     private JTextField[] oikeaRivi;
+    /**
+     * Taulukko, joka kertoo jokaisesta pelaajan rivistä montako meni oikein 
+     * oikealle ja väärälle paikalle.
+     */
     private JTextField[] montakoOikein;
+    /**
+     * Nappula, jota painamalla saa näkyville ohjeen.
+     */
     private JButton ohje;
+    /**
+     * Nappulasta uusi peli saa aloitettua uuden pelin.
+     */
     private JButton uusiPeli;
+    /**
+     * Nappula lisää sinisen värin pelaajan riviin.
+     */
     private JButton sininen;
+    /**
+     * Nappula lisää punaisen värin pelaajan riviin.
+     */
     private JButton punainen;
+    /**
+     * Nappula lisää pinkin värin pelaajan riviin.
+     */
     private JButton pinkki;
+    /**
+     * Nappula lisää liilan värin pelaajan riviin.
+     */
     private JButton liila;
+    /**
+     * Nappula lisää keltaisen värin pelajan riviin.
+     */
     private JButton keltainen;
+    /**
+     * Nappula lisää vihreän värin pelaajan riviin.
+     */
     private JButton vihrea;
+    
+    /**
+     * Konstruktorissa luodaan attribuuteille ilmentymät ja asetetaan
+     * käyttöliittymäoliot alkutilaansa.
+     * Tehdään paneeleja, joiden avulla eri kentät saadaan asemoitua ja asetetaan
+     * käyttöliittymäelementit näkymään lay-outissa. Asetetaan paneeleille kiinteät
+     * koot. Lisäksi luodaan nappuloille tapahtumankuuntelijat.
+     */
 
     public Mastermind() {
-        arvottuRivi = new Rivi();
+        arvottuRivi = new OikeaRivi();
         pelaajanRivi = new PelaajanRivi();
         kierrosLaskuri = new Laskuri();
 
-        matriisi = new JTextField[8][4];
+        pelaajanArvaukset = new JTextField[8][4];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 4; j++) {
-                matriisi[i][j] = new JTextField();
-                matriisi[i][j].setEditable(false);
+                pelaajanArvaukset[i][j] = new JTextField();
+                pelaajanArvaukset[i][j].setEditable(false);
             }
         }
 
@@ -77,7 +128,7 @@ public class Mastermind extends JFrame {
         JPanel arvaukset = new JPanel(new GridLayout(8, 4));
         for (int a = 0; a < 8; a++) {
             for (int b = 0; b < 4; b++) {
-                arvaukset.add(matriisi[a][b]);
+                arvaukset.add(pelaajanArvaukset[a][b]);
             }
         }
 
@@ -113,7 +164,7 @@ public class Mastermind extends JFrame {
         arvattavaRivi.setPreferredSize(new Dimension(150, 45));
         nappulat.setPreferredSize(new Dimension(185, 1));
         
-        asetaTaustavari();
+        asetaTaustavariJaTyhjennaKentat();
 
         sininen.addActionListener(
                 new ActionListener() {
@@ -122,7 +173,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(1);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.BLUE);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.BLUE);
 
                         toimi(sarake);
 
@@ -136,7 +187,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(2);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.RED);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.RED);
 
                         toimi(sarake);
 
@@ -150,7 +201,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(3);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.PINK);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.PINK);
 
                         toimi(sarake);
                     }
@@ -163,7 +214,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(4);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.MAGENTA);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.MAGENTA);
 
                         toimi(sarake);
                     }
@@ -176,7 +227,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(5);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.YELLOW);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.YELLOW);
 
                         toimi(sarake);
                     }
@@ -189,7 +240,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         int sarake = pelaajanRivi.lisaaVari(6);
                         int rivi = kierrosLaskuri.monesko();
-                        matriisi[7 - rivi][sarake].setBackground(Color.GREEN);
+                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.GREEN);
 
                         toimi(sarake);
                     }
@@ -202,7 +253,7 @@ public class Mastermind extends JFrame {
                     public void actionPerformed(ActionEvent tapahtuma) {
                         String viesti="Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
                                 + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
-                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele nappuloita \n"
+                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
                                 + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
                                 + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
                                 + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
@@ -219,18 +270,29 @@ public class Mastermind extends JFrame {
 
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        arvottuRivi = new Rivi();
+                        arvottuRivi = new OikeaRivi();
                         pelaajanRivi = new PelaajanRivi();
                         kierrosLaskuri = new Laskuri();
                         
-                        asetaTaustavari();
+                        asetaTaustavariJaTyhjennaKentat();
                         nappuloidenToiminta(true);
 
                     }
                 });
+        
     }
     
-
+    /**
+     * Metodi toimi testaa lisättiinkö edellinen väri pelaajan rivin viimeiseen
+     * paikkaan. Jos lisättiin, metodi kutsuu metodeita, jotka tarkistavat oikeilla
+     * ja väärillä paikoilla olevien värien määrän, ja tulostaa nämä tiedot. Jos 
+     * pelaajan rivi meni oikein tai arvaus oli kahdeksas, metodi kutsuu metodia
+     * oikean rivin tulostamiseen ja nappuloiden asettamiseen toimimattomiksi. 
+     * Muussa tapauksessa, metodi tyhjentää pelaajan rivin seuraavaa kierrosta 
+     * varten ja siirtää kierroslaskuria yhden eteenpäin.
+     * 
+     * @param sarake kertoo, monenneksi uusi väri lisättiin pelaajan riviin
+     */
     private void toimi(int sarake) {
         if (sarake == 3) {
             int oikeillaPaikoilla = arvottuRivi.tarkistaOikeatOikeallaPaikalla(pelaajanRivi.annaPelaajanRivi());
@@ -255,6 +317,11 @@ public class Mastermind extends JFrame {
         }
     }
     
+    /**
+     * Metodi asettaa nappulat joko toimiviksi tai toimimattomiksi.
+     * @param totuus true tai false, riippuen halutaanko nappulat toimintakuntoon
+     * vai toimimattomiksi
+     */
     private void nappuloidenToiminta(boolean totuus) {
         sininen.setEnabled(totuus);
         punainen.setEnabled(totuus);
@@ -263,7 +330,10 @@ public class Mastermind extends JFrame {
         keltainen.setEnabled(totuus);
         vihrea.setEnabled(totuus);
     }
-
+    
+    /**
+     * Metodi tulostaa oikean rivin pelaajan nähtäville.
+     */
     private void tulostaOikeaRivi() {
         ArrayList<Integer> oRivi = arvottuRivi.annaArvottuRivi();
         for (int i = 0; i < 4; i++) {
@@ -283,12 +353,17 @@ public class Mastermind extends JFrame {
             }
         }
     }
-
-    private void asetaTaustavari() {
+    
+    /**
+     * Metodi asettaa kaikille kentille taustavärin ja tyhjentää kentät. 
+     * Eli metodi tyhjentää kaikki kentät väreistä ja teksteistä eli 
+     * ikäänkuin nollaa tilanteen. 
+     */
+    private void asetaTaustavariJaTyhjennaKentat() {
         
-        for (int i = 0; i < matriisi.length; i++) 
-            for (int j = 0; j < matriisi[0].length; j++) 
-                matriisi[i][j].setBackground(Color.getHSBColor(0.36f, 0.1f, 0.9f));
+        for (int i = 0; i < pelaajanArvaukset.length; i++) 
+            for (int j = 0; j < pelaajanArvaukset[0].length; j++) 
+                pelaajanArvaukset[i][j].setBackground(Color.getHSBColor(0.36f, 0.1f, 0.9f));
             
         for (int i = 0; i < oikeaRivi.length; i++) 
             oikeaRivi[i].setBackground(Color.getHSBColor(0.36f, 0.1f, 0.9f));
@@ -299,10 +374,23 @@ public class Mastermind extends JFrame {
         }
     }
     
-    private static void ponnahdusIkkuna(String viesti, String otsikko) {
+    /**
+     * Metodi muodostaa ponnahdusikkunan, jossa voi ilmoittaa pelaajalle asioita.
+     * Eli ponnahdusikkunalle annetaan viesti, jonka se sitten ponnauttaa käyttäjälle.
+     * 
+     * @param viesti Teksti, joka lukee ponnahdusikkunassa.
+     * @param otsikko Ponnahdusikkunan otsikko
+     */
+    private void ponnahdusIkkuna(String viesti, String otsikko) {
         JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
     }
     
+    /**
+     * Pääohjelma, joka luo ilmentymän pelistä ja asettaa ikkunan näkyville. 
+     * Lisäksi pääohjelma asettaa ikkunalle koon ja luo ominaisuuden ikkunan
+     * sulkemista varten.
+     * @param args 
+     */
 
     public static void main(String args[]) {
         Mastermind ikkuna = new Mastermind();

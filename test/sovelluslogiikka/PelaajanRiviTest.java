@@ -1,8 +1,6 @@
+
 package sovelluslogiikka;
 
-
-
-import sovelluslogiikka.PelaajanRivi;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -98,7 +96,7 @@ public class PelaajanRiviTest {
     }
     
     @Test
-    public void lisaysPalauttaaNollanTyhjentamisenJalkeen() {
+    public void tyhjennaPelaajanRiviTyhjentaaRivin() {
         pelaajanRivi.lisaaVari(1);
         pelaajanRivi.lisaaVari(2);
         pelaajanRivi.tyhjennaPelaajanRivi();
@@ -106,12 +104,10 @@ public class PelaajanRiviTest {
     }
     
     @Test
-    public void tyhjennaPelaajanRiviTyhjentaaRivin() {
+    public void lisaysLisaaRivinEnsimmaiseenPaikkaanTyhjentamisenJalkeen() {
         pelaajanRivi.lisaaVari(1);
-        pelaajanRivi.lisaaVari(2);
-        
         pelaajanRivi.tyhjennaPelaajanRivi();
-        assertEquals(0, pelaajanRivi.pelaajanRivinPituus());
+        assertEquals(0, pelaajanRivi.lisaaVari(2));
     }
     
     @Test

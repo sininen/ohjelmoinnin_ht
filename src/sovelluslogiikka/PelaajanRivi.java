@@ -1,5 +1,5 @@
-package sovelluslogiikka;
 
+package sovelluslogiikka;
 
 import java.util.ArrayList;
 
@@ -14,22 +14,19 @@ import java.util.ArrayList;
 public class PelaajanRivi {
     
     /**
-     * pelaajan arvailema rivi 
+     * pelaajan arvaama rivi 
      */
-    
     private ArrayList<Integer> pelaajanRivi;
     
     /**
-     * laskuri laskemaan missä kohdassa pelaajan rivissä ollaan menossa
+     * laskuri kertomaan missä kohdassa pelaajan rivissä ollaan menossa
      */
-    
     private Laskuri laskuri;
     
     /**
-     * Konstruktori luo taulukon pelaajan riviä varten ja laskurin numeroiden
-     * paikan laskemiseen rivissä.
+     * Konstruktori luo taulukon pelaajan riviä varten ja laskurin kertomaan
+     * monenteenko paikkaan väri lisättiin.
      */
-    
     public PelaajanRivi() {
         pelaajanRivi=new ArrayList<Integer>();
         laskuri=new Laskuri();
@@ -42,20 +39,20 @@ public class PelaajanRivi {
      * @param variNro pelaajan arvaaman värin vastine numerona
      * @return monenneksi numero lisättiin riviin ja -1, jos ei lisätty
      */
-    
     public int lisaaVari(int variNro) {
         if(variNro>=1 && variNro<=6) {
             pelaajanRivi.add(variNro);
             laskuri.etene();
+            return laskuri.monesko()-1;
         }
-        return laskuri.monesko()-1;
+        else
+            return -1;
     }
     
     /**
      * Metodi palauttaa pelaajan arvaaman rivin
      * @return pelaajan rivi taulukkona
      */
-    
     public ArrayList annaPelaajanRivi() {
         return pelaajanRivi;
     }
@@ -64,7 +61,6 @@ public class PelaajanRivi {
      * Metodi palauttaa pelaajan rivin tekstinä.
      * @return pelaajan rivi tekstinä
      */
-    
     public String tulostaPelaajanRivi() {
         return pelaajanRivi.toString();
     }
@@ -73,7 +69,6 @@ public class PelaajanRivi {
      * Metodi palauttaa pelaajan rivin tämänhetkisen pituuden
      * @return pelaajan rivin pituus
      */
-    
     public int pelaajanRivinPituus() {
         return pelaajanRivi.size();
     }
@@ -82,7 +77,6 @@ public class PelaajanRivi {
      * Metodi tyhjentää pelaajan rivin ja nollaa laskurin, 
      * jotta käyttäjä voi arvailla seuraavaa riviä.
      */
-    
     public void tyhjennaPelaajanRivi() {
         pelaajanRivi.clear();
         laskuri.nollaa();

@@ -1,5 +1,5 @@
-package sovelluslogiikka;
 
+package sovelluslogiikka;
 
 /**
  * Luokka käsittää hyvin yksinkertaisen laskurin,
@@ -18,7 +18,6 @@ public class Laskuri {
     /**
      * Konstruktori asettaa laskurin nollaan.
      */
-    
     public Laskuri() {
         numero=0;
     }
@@ -29,7 +28,6 @@ public class Laskuri {
      * 
      * @return numero, jossa laskuri on menossa. 
      */
-    
     public int monesko() {
         return numero;
     }
@@ -38,7 +36,6 @@ public class Laskuri {
      * Metodi kasvattaa laskurin arvoa yhdellä eli laskuri etenee yhden
      * askeleen eteenpäin.
      */
-    
     public void etene() {
         numero++;
     }
@@ -46,7 +43,6 @@ public class Laskuri {
     /**
      * Metodi nollaa laskurin.
      */
-    
     public void nollaa() {
         numero=0;
     }

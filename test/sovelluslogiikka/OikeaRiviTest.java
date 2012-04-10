@@ -1,8 +1,6 @@
+
 package sovelluslogiikka;
 
-
-
-import sovelluslogiikka.Rivi;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,11 +10,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class RiviTest {
+public class OikeaRiviTest {
     
-    Rivi rivi;
+    OikeaRivi rivi;
     
-    public RiviTest() {
+    public OikeaRiviTest() {
     }
 
     @BeforeClass
@@ -29,7 +27,7 @@ public class RiviTest {
     
     @Before
     public void setUp() {
-        rivi=new Rivi();
+        rivi=new OikeaRivi();
     }
     
     @After
@@ -42,17 +40,13 @@ public class RiviTest {
     public void arvottuRiviOikeanMittainen() {
         ArrayList arvottuRivi=rivi.annaArvottuRivi();
         assertEquals(4, arvottuRivi.size());
-        
     }
     
     @Test
     public void arvotussaRivissaEnsimmainenNumeroOikeanlainen() {
         ArrayList<Integer> arvottuRivi=rivi.annaArvottuRivi();
         int ensimmainenAlkio=arvottuRivi.get(0);
-        assertTrue(ensimmainenAlkio>0);
-        assertTrue(ensimmainenAlkio<7);
-        
-        
+        assertTrue(ensimmainenAlkio>0 && ensimmainenAlkio<7);  
     }
     
     @Test 
@@ -86,7 +80,7 @@ public class RiviTest {
     }
     
     @Test
-    public void oikeallaJaVaarallaPaikallaYhtNeljaAlkiota() {
+    public void oikeallaJaVaarallaPaikallaYhtMaxNeljaAlkiota() {
         ArrayList<Integer> pelaajanRivi=new ArrayList<Integer>();
         for(int i=0; i<4; i++)
             pelaajanRivi.add(1);

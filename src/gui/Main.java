@@ -9,13 +9,13 @@ package gui;
 import java.util.Scanner;
 import sovelluslogiikka.Laskuri;
 import sovelluslogiikka.PelaajanRivi;
-import sovelluslogiikka.Rivi;
+import sovelluslogiikka.OikeaRivi;
 
 public class Main {
     private static Scanner lukija= new Scanner(System.in);
     
     public static void main(String[] args) {
-        Rivi peli=new Rivi();
+        OikeaRivi peli=new OikeaRivi();
         Laskuri kierrosLaskuri=new Laskuri();
         PelaajanRivi pelaajanRivi=new PelaajanRivi();
         

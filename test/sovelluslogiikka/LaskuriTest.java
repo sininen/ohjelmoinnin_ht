@@ -1,8 +1,6 @@
+
 package sovelluslogiikka;
 
-
-
-import sovelluslogiikka.Laskuri;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -57,7 +55,6 @@ public class LaskuriTest {
     
     @Test
     public void nollausNollaaLaskurin() {
-        laskuri.etene();
         laskuri.etene();
         laskuri.nollaa();
         assertEquals(0, laskuri.monesko());
