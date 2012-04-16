@@ -2,12 +2,10 @@ package gui;
 
 /**
  * Tämä luokka on graafinen käyttöliittymä Mastermind-pelille.
- * Käyttöliittymä käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri.
+ * Käyttöliittymä käyttää luokkaa Peli, joka sisältää tarvittavat metodit sovellus-
+ * logiikasta.
  */
-
-import sovelluslogiikka.Laskuri;
-import sovelluslogiikka.OikeaRivi;
-import sovelluslogiikka.PelaajanRivi;
+import sovelluslogiikka.Peli;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,17 +14,9 @@ import java.util.ArrayList;
 public class Mastermind extends JFrame {
     
     /**
-     * ilmentymä luokasta OikeaRivi, ohjelman arpoma oikea rivi
+     * ilmentymä luokasta peli, pelin logiikka
      */
-    private OikeaRivi arvottuRivi;
-    /**
-     * ilmentymä luokasta PelaajanRivi, pelaajan arvaama rivi
-     */
-    private PelaajanRivi pelaajanRivi;
-    /**
-     * ilmentymä luokasta Laskuri, kierrosLaskuri kierrosten laskemiseen
-     */
-    private Laskuri kierrosLaskuri;
+    private Peli peli;
     
     /**
      * Taulukko (matriisi) pelaajan arvaamia rivejä.
@@ -75,39 +65,42 @@ public class Mastermind extends JFrame {
     private JButton vihrea;
     
     /**
-     * Konstruktorissa luodaan attribuuteille ilmentymät ja asetetaan
-     * käyttöliittymäoliot alkutilaansa.
-     * Tehdään paneeleja, joiden avulla eri kentät saadaan asemoitua ja asetetaan
-     * käyttöliittymäelementit näkymään lay-outissa. Asetetaan paneeleille kiinteät
-     * koot. Lisäksi luodaan nappuloille tapahtumankuuntelijat.
+     * Konstruktorissa luodaan peli-olio ja kutsutaan metodeita, jotka luovat
+     * tekstikentät, nappulat ja paneelit kenttien asemoimiseen. Kutsutaan metodeita
+     * paneelien asemointiin lay-outissa ja asettamaan paneeleille kiinteät koot. 
+     * Lisäksi kutsutaan metodeita, jotka asettavat kentille taustavärin ja luovat tapahtuman-
+     * kuuntelijat nappuloille.
      */
-
     public Mastermind() {
-        arvottuRivi = new OikeaRivi();
-        pelaajanRivi = new PelaajanRivi();
-        kierrosLaskuri = new Laskuri();
-
-        pelaajanArvaukset = new JTextField[8][4];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 4; j++) {
-                pelaajanArvaukset[i][j] = new JTextField();
-                pelaajanArvaukset[i][j].setEditable(false);
-            }
-        }
-
-
-        oikeaRivi = new JTextField[4];
-        for (int i = 0; i < 4; i++) {
-            oikeaRivi[i] = new JTextField();
-            oikeaRivi[i].setEditable(false);
-        }
-
-        montakoOikein = new JTextField[16];
-        for (int i = 0; i < 16; i++) {
-            montakoOikein[i] = new JTextField();
-            montakoOikein[i].setEditable(false);
-        }
-
+        peli=new Peli();
+        luoTekstiKentat();
+        luoNappulat();
+        luoPaneelitJaAsetaLayOut();
+        
+        asetaTaustavariJaTyhjennaKentat();
+        
+        Color vari=Color.BLUE;
+        luoKuuntelijaVariNappulalle(sininen, 1, vari);
+        vari=Color.RED;
+        luoKuuntelijaVariNappulalle(punainen, 2, vari);
+        vari=Color.PINK;
+        luoKuuntelijaVariNappulalle(pinkki, 3, vari);
+        vari=Color.MAGENTA;
+        luoKuuntelijaVariNappulalle(liila, 4, vari);
+        vari=Color.YELLOW;
+        luoKuuntelijaVariNappulalle(keltainen, 5, vari);
+        vari=Color.GREEN;
+        luoKuuntelijaVariNappulalle(vihrea, 6, vari);
+        
+        luoKuuntelijaOhjeNappulalle();
+        luoKuuntelijaUusiPeliNappulalle(); 
+    }
+    
+    /**
+     * Metodi luo ohje-, uusi peli- ja värinappulat ja asettaa niille
+     * nimen mukaisen taustavärin.
+     */
+    private void luoNappulat() {
         ohje = new JButton(" ohje ");
         ohje.setBackground(Color.getHSBColor(0.36f, 0.2f, 0.9f));
         uusiPeli = new JButton("uusi peli");
@@ -124,24 +117,55 @@ public class Mastermind extends JFrame {
         keltainen.setBackground(Color.YELLOW);
         vihrea = new JButton("vihreä");
         vihrea.setBackground(Color.GREEN);
-
-        JPanel arvaukset = new JPanel(new GridLayout(8, 4));
-        for (int a = 0; a < 8; a++) {
-            for (int b = 0; b < 4; b++) {
-                arvaukset.add(pelaajanArvaukset[a][b]);
+    }
+    
+    /**
+     * Metodi luo tekstikentät pelaajan arvauksille, oikealle riville ja 
+     * montako väreistä meni oikein tietojen tulostamiselle. Kaikkiin kenttiin
+     * asetetaan kirjoituskielto pelaajalle.
+     */
+    private void luoTekstiKentat() {
+        pelaajanArvaukset = new JTextField[8][4];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 4; j++) {
+                pelaajanArvaukset[i][j] = new JTextField();
+                pelaajanArvaukset[i][j].setEditable(false);
             }
         }
-
-        JPanel arvattavaRivi = new JPanel(new GridLayout(1, 4));
+        
+        oikeaRivi = new JTextField[4];
         for (int i = 0; i < 4; i++) {
-            arvattavaRivi.add(oikeaRivi[i]);
+            oikeaRivi[i] = new JTextField();
+            oikeaRivi[i].setEditable(false);
         }
 
-        JPanel merkit = new JPanel(new GridLayout(16, 1));
+        montakoOikein = new JTextField[16];
         for (int i = 0; i < 16; i++) {
-            merkit.add(montakoOikein[i]);
+            montakoOikein[i] = new JTextField();
+            montakoOikein[i].setEditable(false);
         }
-
+    }
+    
+    /**
+     * Metodi kutsuu metodeita, jotka luovat tekstikentistä ja nappuloista
+     * paneeleja. Paneelit helpottavat kenttien asettamisa näkyville. Lisäksi
+     * metodista kutsutaan metodia paneelien asettamiseen näkyville lay-outiin ja 
+     * paneelien kiinteän koon asettamiseen.
+     */
+    private void luoPaneelitJaAsetaLayOut() {
+        JPanel arvaukset=luoArvauksetPaneeli();
+        JPanel arvattavaRivi=luoArvattavaRiviPaneeli();
+        JPanel merkit=luoMerkitPaneeli();
+        JPanel nappulat=luoNappulaPaneeli();
+        
+        asetaLayOutJaPaneelienKoot(arvaukset, arvattavaRivi, merkit, nappulat);
+    }
+    
+    /**
+     * Metodi luo paneelin nappuloita varten ja asettaa nappulat paneeliin.
+     * @return paneeli, jossa nappulat ovat
+     */
+    private JPanel luoNappulaPaneeli() {
         JPanel nappulat = new JPanel(new GridLayout(4, 2));
         nappulat.add(sininen);
         nappulat.add(punainen);
@@ -151,171 +175,170 @@ public class Mastermind extends JFrame {
         nappulat.add(vihrea);
         nappulat.add(ohje);
         nappulat.add(uusiPeli);
-
+        return nappulat;
+    }
+    
+    /**
+     * Metodi luo paneelin pelaajan arvauksia varten ja asettaa pelaajan arvaukset
+     * matriisin paneeliin.
+     * @return pelaajan arvaukset sisältävän paneelin
+     */
+    private JPanel luoArvauksetPaneeli() {
+        JPanel arvaukset = new JPanel(new GridLayout(8, 4));
+        for (int a = 0; a < 8; a++) {
+            for (int b = 0; b < 4; b++) {
+                arvaukset.add(pelaajanArvaukset[a][b]);
+            }
+        }
+        return arvaukset;
+    }
+    
+    /**
+     * Metodi luo oikeaa riviä varten paneelin ja lisää oikean eli arvattavan
+     * rivin sisältävät tekstikentät paneeliin.
+     * @return paneeli, jossa oikean rivin tekstikentät ovat
+     */
+    private JPanel luoArvattavaRiviPaneeli() {
+        JPanel arvattavaRivi = new JPanel(new GridLayout(1, 4));
+        for (int i = 0; i < 4; i++) {
+            arvattavaRivi.add(oikeaRivi[i]);
+        }
+        return arvattavaRivi;
+    }
+    
+    /**
+     * Metodi luo paneelin tuloksia varten eli tietoja, montako väriä rivistä
+     * meni oikein oikealle ja väärälle paikalle ja lisää tulokset sisältävän
+     * taulukon paneeliin.
+     * @return tulokset sisältävä paneeli
+     */
+    private JPanel luoMerkitPaneeli() {
+        JPanel merkit = new JPanel(new GridLayout(16, 1));
+        for (int i = 0; i < 16; i++) {
+            merkit.add(montakoOikein[i]);
+        }
+        return merkit;
+    }
+    
+    /**
+     * Metodi asettaa parametreinaan saatavat paneelit näkyviin lay-outissa. 
+     * Lisäksi metodi asettaa paneeleille kiinteät koot.
+     * @param arvaukset paneeli, joka sisältää matriisin pelaajan arvauksista
+     * @param arvattavaRivi paneeli, jossa on oikea rivi
+     * @param merkit paneeli, jossa kentät rivin tuloksen ilmoittamiseen
+     * @param nappulat paneeli, jossa on kaikki pelin nappulat
+     */
+    private void asetaLayOutJaPaneelienKoot(JPanel arvaukset, JPanel arvattavaRivi, JPanel merkit, JPanel nappulat) {
         this.setLayout(new BorderLayout());
         this.add("North", arvattavaRivi);
         this.add("Center", merkit);
         this.add("West", arvaukset);
         this.add("East", nappulat);
 
-
         arvaukset.setPreferredSize(new Dimension(200, 1));
         merkit.setPreferredSize(new Dimension(200, 10));
         arvattavaRivi.setPreferredSize(new Dimension(150, 45));
         nappulat.setPreferredSize(new Dimension(185, 1));
-        
-        asetaTaustavariJaTyhjennaKentat();
-
-        sininen.addActionListener(
+    }
+    
+    /**
+     * Metodi luo tapahtumankuuntelijan parametrina saamalleen nappulalle. Lisäksi
+     * metodi kutsuu Pelin lisaaVari metodia, joka lisää värin pelaajan riviin, aina
+     * nappulaa painettaessa. Metodi vaihtaa pelaajanArvaukset matriisiin lisättävän 
+     * värin mukaisen taustavärin oikealle kohdalle ja kutsuu toimi metodia, 
+     * joka huolehtii jonkin nappulan painamisesta aiheutuvasta muusta toiminnasta.
+     * 
+     * @param nappula Nappula, jolle tapahtumankuuntelija luodaan
+     * @param variNro numero, jota nappulan väri vastaa
+     * @param vari nappulan väri eli väri, jonka pelaaja haluaa lisätä riviin
+     */
+    private void luoKuuntelijaVariNappulalle(JButton nappula, final int variNro, final Color vari) {
+        nappula.addActionListener(
                 new ActionListener() {
-
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(1);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.BLUE);
-
-                        toimi(sarake);
-
-                    }
-                });
-
-        punainen.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(2);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.RED);
-
-                        toimi(sarake);
-
-                    }
-                });
-
-        pinkki.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(3);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.PINK);
-
+                        int sarake=peli.lisaaVari(variNro);
+                        int rivi=peli.moneskoKierros();
+                        pelaajanArvaukset[7-rivi][sarake].setBackground(vari);
                         toimi(sarake);
                     }
                 });
-
-        liila.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(4);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.MAGENTA);
-
-                        toimi(sarake);
-                    }
-                });
-
-        keltainen.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(5);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.YELLOW);
-
-                        toimi(sarake);
-                    }
-                });
-
-        vihrea.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent tapahtuma) {
-                        int sarake = pelaajanRivi.lisaaVari(6);
-                        int rivi = kierrosLaskuri.monesko();
-                        pelaajanArvaukset[7 - rivi][sarake].setBackground(Color.GREEN);
-
-                        toimi(sarake);
-                    }
-                });
-
+    }
+    
+    /**
+     * Metodi luo tapahtumankuuntelijan ohje nappulalle. Nappulaa painettaessa
+     * metodi ponnauttaa näkyville ohjeen, jota kutsutaan Peli-luokasta.
+     */
+    private void luoKuuntelijaOhjeNappulalle() {
         ohje.addActionListener(
                 new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        String viesti="Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
-                                + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
-                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
-                                + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
-                                + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
-                                + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
-                                + "on kahdeksan mahdollisuutta arvata oikea rivi. Voitat pelin, mikäli \n"
-                                + "arvaat oikean rivin viimeistään kahdeksannella arvauksella.";
-                        
-                        ponnahdusIkkuna(viesti, "OHJE");
+//                        String viesti="Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
+//                                + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
+//                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
+//                                + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
+//                                + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
+//                                + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
+//                                + "on kahdeksan mahdollisuutta arvata oikea rivi. Voitat pelin, mikäli \n"
+//                                + "arvaat oikean rivin viimeistään kahdeksannella arvauksella.";
+//                        
+//                        peli.ponnahdusIkkuna(viesti, "OHJE");
+                        peli.tulostaOhje();
                     
                     }
                 });
 
+    }
+    
+    /**
+     * Metodi luo tapahtumankuuntelijan uusi peli-nappulalle. Metodi luo uuden 
+     * peli-olion, tyhjentää kentät ja asettaa nappulat toimintakuntoon.
+     */
+    private void luoKuuntelijaUusiPeliNappulalle() {
         uusiPeli.addActionListener(
                 new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        arvottuRivi = new OikeaRivi();
-                        pelaajanRivi = new PelaajanRivi();
-                        kierrosLaskuri = new Laskuri();
-                        
+                        peli=new Peli();
                         asetaTaustavariJaTyhjennaKentat();
                         nappuloidenToiminta(true);
 
                     }
                 });
-        
     }
     
     /**
-     * Metodi toimi testaa lisättiinkö edellinen väri pelaajan rivin viimeiseen
-     * paikkaan. Jos lisättiin, metodi kutsuu metodeita, jotka tarkistavat oikeilla
-     * ja väärillä paikoilla olevien värien määrän, ja tulostaa nämä tiedot. Jos 
-     * pelaajan rivi meni oikein tai arvaus oli kahdeksas, metodi kutsuu metodia
-     * oikean rivin tulostamiseen ja nappuloiden asettamiseen toimimattomiksi. 
-     * Muussa tapauksessa, metodi tyhjentää pelaajan rivin seuraavaa kierrosta 
-     * varten ja siirtää kierroslaskuria yhden eteenpäin.
+     * Metodi kutsuu Peli-luokan toimi-metodia ja saa palautuksena taulukon, jonka
+     * ensimmäinen alkio on luku, kuinka monta väriä pelaajan rivissä meni oikein
+     * oikealle paikalle ja toinen alkio on luku, kuinka monta väriä meni oikein
+     * mutta väärälle paikalle. Metodi asettaa nämä tulokset näkyville montakoOikein
+     * -kenttään. Jos taulukon ensimmäinen alkio on -1, lisätty väri
+     * ei mennyt pelaajan rivin viimeiselle paikalle, tällöin tulosta ei ilmoiteta.
+     * Lisäksi metodi tarkistaa päättyikö peli kutsumalla Peli-luokan paattyikoPeli-metodia. 
+     * Jos päättyi, metodi kutsuu metodeita oikean rivin tulostamiseen ja nappuloiden
+     * asettamiseen toimimattomiksi. Lopuksi metodi kutsuu Peli-luokan tarkistaTulos
+     * -metodia, jonka ponnauttaa pelin lopullisen tuloksen näkyville tarpeen vaatiessa.
      * 
      * @param sarake kertoo, monenneksi uusi väri lisättiin pelaajan riviin
      */
     private void toimi(int sarake) {
-        if (sarake == 3) {
-            int oikeillaPaikoilla = arvottuRivi.tarkistaOikeatOikeallaPaikalla(pelaajanRivi.annaPelaajanRivi());
-            int vaarillaPaikoilla = arvottuRivi.tarkistaOikeatVaarallaPaikalla(pelaajanRivi.annaPelaajanRivi());
-
-            montakoOikein[15 - (2 * kierrosLaskuri.monesko() + 1)].setText("Oikeita oikeilla paikoilla: "
-                    + oikeillaPaikoilla);
-            montakoOikein[15 - (2 * kierrosLaskuri.monesko())].setText("Oikeita väärillä paikoilla: "
-                    + vaarillaPaikoilla);
-
-            if (oikeillaPaikoilla == 4 || kierrosLaskuri.monesko() == 7) {
+        int[] oikeatJaVaarat=peli.toimi(sarake);
+        if(oikeatJaVaarat[0]!=-1) {
+            montakoOikein[15 - (2 * peli.moneskoKierros()-1)].setText("Oikeita oikeilla paikoilla: "
+                    + oikeatJaVaarat[0]);
+            montakoOikein[15 - (2 * peli.moneskoKierros()-2)].setText("Oikeita väärillä paikoilla: "
+                    + oikeatJaVaarat[1]);
+        }
+        if (peli.paattyikoPeli(oikeatJaVaarat[0])) {
                 tulostaOikeaRivi();
                 nappuloidenToiminta(false);
-                if(oikeillaPaikoilla == 4)
-                    ponnahdusIkkuna("Onneksi olkoon! Voitit pelin! : )", "VOITTO");
-                else if(kierrosLaskuri.monesko() == 7)
-                    ponnahdusIkkuna("Peli päättyi. \nValitettavasti hävisit tällä kertaa : (", "PELI PÄÄTTYI");
-            }
-
-            pelaajanRivi.tyhjennaPelaajanRivi();
-            kierrosLaskuri.etene();
         }
+        peli.tarkistaTulos(oikeatJaVaarat[0]);       
     }
+    
     
     /**
      * Metodi asettaa nappulat joko toimiviksi tai toimimattomiksi.
@@ -335,7 +358,7 @@ public class Mastermind extends JFrame {
      * Metodi tulostaa oikean rivin pelaajan nähtäville.
      */
     private void tulostaOikeaRivi() {
-        ArrayList<Integer> oRivi = arvottuRivi.annaArvottuRivi();
+        ArrayList<Integer> oRivi = peli.annaArvottuRivi();
         for (int i = 0; i < 4; i++) {
             int vari = oRivi.get(i);
             if (vari == 1) {
@@ -381,12 +404,13 @@ public class Mastermind extends JFrame {
      * @param viesti Teksti, joka lukee ponnahdusikkunassa.
      * @param otsikko Ponnahdusikkunan otsikko
      */
-    private void ponnahdusIkkuna(String viesti, String otsikko) {
-        JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
-    }
+//    private void ponnahdusIkkuna(String viesti, String otsikko) {
+//        JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
+//    }
     
     /**
-     * Pääohjelma, joka luo ilmentymän pelistä ja asettaa ikkunan näkyville. 
+     * Pääohjelma, joka luo ilmentymän Mastermind-luokasta, eli pelin graafisesta
+     * käyttöliittymästä, ja asettaa ikkunan näkyville. 
      * Lisäksi pääohjelma asettaa ikkunalle koon ja luo ominaisuuden ikkunan
      * sulkemista varten.
      * @param args 

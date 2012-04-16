@@ -38,11 +38,11 @@ public class OikeaRivi {
     }
     
     /**
-     * Metodi palauttaa oikean rivin.
+     * Metodi palauttaa oikean rivin taulukkona.
      * 
      * @return oikea rivi eli ohjelman arpoma rivi taulukkona
      */
-    public ArrayList annaArvottuRivi() {
+    public ArrayList<Integer> annaArvottuRivi() {
         return arvottuRivi;
     }
     
@@ -63,7 +63,7 @@ public class OikeaRivi {
      * @param pelaajanRivi pelaajan arvaama rivi
      * @return montako numeroa pelaajan rivistä oli oikein ja oikealla paikalla
      */
-    public int tarkistaOikeatOikeallaPaikalla(ArrayList pelaajanRivi) {
+    public int tarkistaOikeatOikeallaPaikalla(ArrayList<Integer> pelaajanRivi) {
         if(pelaajanRivi.size()==4) {
             int oikeallaPaikalla=0;
             for(int i=0; i<4; i++) 
@@ -87,7 +87,7 @@ public class OikeaRivi {
      * @param pelaajanRivi pelaajan arvaama rivi
      * @return montako numeroa oli oikein mutta väärällä paikalla
      */
-    public int tarkistaOikeatVaarallaPaikalla(ArrayList pelaajanRivi) {
+    public int tarkistaOikeatVaarallaPaikalla(ArrayList<Integer> pelaajanRivi) {
         if(pelaajanRivi.size()==4) {
             ArrayList<Integer> apuRivi=new ArrayList<Integer>();
             for(int i=0; i<4; i++)
@@ -116,7 +116,7 @@ public class OikeaRivi {
      * 
      * @param oikeaRivi Testaajan asettama oikea eli arvattava rivi.
      */
-    public void asetaOikeaksiRiviksi(ArrayList oikeaRivi) {
+    public void asetaOikeaksiRiviksi(ArrayList<Integer> oikeaRivi) {
         arvottuRivi=oikeaRivi;
     }
     
