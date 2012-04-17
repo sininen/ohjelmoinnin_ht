@@ -65,11 +65,11 @@ public class OikeaRivi {
      */
     public int tarkistaOikeatOikeallaPaikalla(ArrayList<Integer> pelaajanRivi) {
         if(pelaajanRivi.size()==4) {
-            int oikeallaPaikalla=0;
+            int oikeillaPaikoilla=0;
             for(int i=0; i<4; i++) 
                 if(pelaajanRivi.get(i)==arvottuRivi.get(i))
-                    oikeallaPaikalla++;
-            return oikeallaPaikalla;
+                    oikeillaPaikoilla++;
+            return oikeillaPaikoilla;
         }
         else 
             return -1;
