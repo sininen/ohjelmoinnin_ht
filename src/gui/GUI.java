@@ -2,21 +2,21 @@ package gui;
 
 /**
  * Tämä luokka on graafinen käyttöliittymä Mastermind-pelille.
- * Käyttöliittymä käyttää luokkaa Peli, joka sisältää tarvittavat metodit sovellus-
- * logiikasta.
+ * Käyttöliittymä käyttää luokkaa Mastermind, joka sisältää tarvittavat metodit 
+ * sovelluslogiikasta.
  */
-import sovelluslogiikka.Peli;
+import sovelluslogiikka.Mastermind;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Mastermind extends JFrame {
+public class GUI extends JFrame {
     
     /**
-     * ilmentymä luokasta peli, pelin logiikka
+     * ilmentymä luokasta Mastermind, pelin logiikka
      */
-    private Peli peli;
+    private Mastermind peli;
     
     /**
      * Taulukko (matriisi) pelaajan arvaamia rivejä.
@@ -65,14 +65,14 @@ public class Mastermind extends JFrame {
     private JButton vihrea;
     
     /**
-     * Konstruktorissa luodaan peli-olio ja kutsutaan metodeita, jotka luovat
-     * tekstikentät, nappulat ja paneelit kenttien asemoimiseen. Kutsutaan metodeita
-     * paneelien asemointiin lay-outissa ja asettamaan paneeleille kiinteät koot. 
-     * Lisäksi kutsutaan metodeita, jotka asettavat kentille taustavärin ja luovat tapahtuman-
-     * kuuntelijat nappuloille.
+     * Konstruktorissa luodaan olio Mastermind-luokasta ja kutsutaan metodeita, 
+     * jotka luovat tekstikentät, nappulat ja paneelit kenttien asemoimiseen. 
+     * Kutsutaan metodeita paneelien asemointiin lay-outissa ja asettamaan 
+     * paneeleille kiinteät koot. Lisäksi kutsutaan metodeita, jotka asettavat
+     * kentille taustavärin ja luovat tapahtumankuuntelijat nappuloille.
      */
-    public Mastermind() {
-        peli=new Peli();
+    public GUI() {
+        peli=new Mastermind();
         luoTekstiKentat();
         luoNappulat();
         luoPaneelitJaAsetaLayOut();
@@ -243,8 +243,8 @@ public class Mastermind extends JFrame {
     
     /**
      * Metodi luo tapahtumankuuntelijan parametrina saamalleen nappulalle. Lisäksi
-     * metodi kutsuu Pelin lisaaVari metodia, joka lisää värin pelaajan riviin, aina
-     * nappulaa painettaessa. Metodi vaihtaa pelaajanArvaukset matriisiin lisättävän 
+     * metodi kutsuu Mastermind-luokan lisaaVari metodia, joka lisää värin pelaajan riviin, 
+     * aina nappulaa painettaessa. Metodi vaihtaa pelaajanArvaukset matriisiin lisättävän 
      * värin mukaisen taustavärin oikealle kohdalle ja kutsuu toimi metodia, 
      * joka huolehtii jonkin nappulan painamisesta aiheutuvasta muusta toiminnasta.
      * 
@@ -267,7 +267,8 @@ public class Mastermind extends JFrame {
     
     /**
      * Metodi luo tapahtumankuuntelijan ohje nappulalle. Nappulaa painettaessa
-     * metodi ponnauttaa näkyville ohjeen, jota kutsutaan Peli-luokasta.
+     * metodi ponnauttaa näkyville ohjeen kutsumalla ponnahdusikkuna-metodia
+     * parametrinaan ohjeteksti.
      */
     private void luoKuuntelijaOhjeNappulalle() {
         ohje.addActionListener(
@@ -275,18 +276,16 @@ public class Mastermind extends JFrame {
 
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-//                        String viesti="Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
-//                                + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
-//                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
-//                                + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
-//                                + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
-//                                + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
-//                                + "on kahdeksan mahdollisuutta arvata oikea rivi. Voitat pelin, mikäli \n"
-//                                + "arvaat oikean rivin viimeistään kahdeksannella arvauksella.";
-//                        
-//                        peli.ponnahdusIkkuna(viesti, "OHJE");
-                        peli.tulostaOhje();
-                    
+                        String viesti="Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
+                                + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
+                                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
+                                + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
+                                + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
+                                + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
+                                + "on kahdeksan mahdollisuutta arvata oikea rivi. Voitat pelin, mikäli \n"
+                                + "arvaat oikean rivin viimeistään kahdeksannella arvauksella.";
+                        
+                        ponnahdusIkkuna(viesti, "OHJE");                    
                     }
                 });
 
@@ -294,7 +293,7 @@ public class Mastermind extends JFrame {
     
     /**
      * Metodi luo tapahtumankuuntelijan uusi peli-nappulalle. Metodi luo uuden 
-     * peli-olion, tyhjentää kentät ja asettaa nappulat toimintakuntoon.
+     * olion Mastermind-luokasta, tyhjentää kentät ja asettaa nappulat toimintakuntoon.
      */
     private void luoKuuntelijaUusiPeliNappulalle() {
         uusiPeli.addActionListener(
@@ -302,7 +301,7 @@ public class Mastermind extends JFrame {
 
                     @Override
                     public void actionPerformed(ActionEvent tapahtuma) {
-                        peli=new Peli();
+                        peli=new Mastermind();
                         asetaTaustavariJaTyhjennaKentat();
                         nappuloidenToiminta(true);
 
@@ -311,16 +310,16 @@ public class Mastermind extends JFrame {
     }
     
     /**
-     * Metodi kutsuu Peli-luokan toimi-metodia ja saa palautuksena taulukon, jonka
+     * Metodi kutsuu Mastermind-luokan toimi-metodia ja saa palautuksena taulukon, jonka
      * ensimmäinen alkio on luku, kuinka monta väriä pelaajan rivissä meni oikein
      * oikealle paikalle ja toinen alkio on luku, kuinka monta väriä meni oikein
      * mutta väärälle paikalle. Metodi asettaa nämä tulokset näkyville montakoOikein
      * -kenttään. Jos taulukon ensimmäinen alkio on -1, lisätty väri
      * ei mennyt pelaajan rivin viimeiselle paikalle, tällöin tulosta ei ilmoiteta.
-     * Lisäksi metodi tarkistaa päättyikö peli kutsumalla Peli-luokan paattyikoPeli-metodia. 
-     * Jos päättyi, metodi kutsuu metodeita oikean rivin tulostamiseen ja nappuloiden
-     * asettamiseen toimimattomiksi. Lopuksi metodi kutsuu Peli-luokan tarkistaTulos
-     * -metodia, jonka ponnauttaa pelin lopullisen tuloksen näkyville tarpeen vaatiessa.
+     * Lisäksi metodi tarkistaa päättyikö peli kutsumalla Mastermind-luokan paattyikoPeli
+     * -metodia. Jos päättyi, metodi kutsuu metodeita oikean rivin tulostamiseen, 
+     * nappuloiden asettamiseen toimimattomiksi ja tarkistaTulos
+     * -metodia, jonka ponnauttaa pelin lopullisen tuloksen näkyville.
      * 
      * @param sarake kertoo, monenneksi uusi väri lisättiin pelaajan riviin
      */
@@ -335,8 +334,24 @@ public class Mastermind extends JFrame {
         if (peli.paattyikoPeli(oikeatJaVaarat[0])) {
                 tulostaOikeaRivi();
                 nappuloidenToiminta(false);
+                tarkistaTulos(oikeatJaVaarat[0]);
+        }       
+    }
+    
+    /**
+     * Metodi kertoo ponnahdusikkunoin pelin tuloksen, jos peli päättyi.
+     * Eli jos rivissä oli neljä oikein oikealla paikalla, metodi kertoo pelaajan 
+     * voittaneen, ja jos pelaajan arvaama rivi oli kahdeksas, metodi kertoo pelaajan
+     * hävinneen (ellei rivi ollut oikea).
+     * @param oikeillaPaikoilla montako väriä pelaajan rivistä oli oikein oikealla paikalla
+     */
+    private void tarkistaTulos(int oikeillaPaikoilla) {
+        if(oikeillaPaikoilla == 4) {
+            ponnahdusIkkuna("Onneksi olkoon! Voitit pelin! : )", "VOITTO");
         }
-        peli.tarkistaTulos(oikeatJaVaarat[0]);       
+        else if(peli.moneskoKierros() == 8) {
+           ponnahdusIkkuna("Peli päättyi. \nValitettavasti hävisit tällä kertaa : (", "PELI PÄÄTTYI");
+        } 
     }
     
     
@@ -398,18 +413,18 @@ public class Mastermind extends JFrame {
     }
     
     /**
-     * Metodi muodostaa ponnahdusikkunan, jossa voi ilmoittaa pelaajalle asioita.
-     * Eli ponnahdusikkunalle annetaan viesti, jonka se sitten ponnauttaa käyttäjälle.
+     * Metodi muodostaa ponnahdusikkunan saamastaan viestistä. Ponnahdusikkunan saa
+     * suljettua OK- tai raksi-painikkeista.
      * 
      * @param viesti Teksti, joka lukee ponnahdusikkunassa.
-     * @param otsikko Ponnahdusikkunan otsikko
+     * @param otsikko Ponnahdusikkunalle otsikko
      */
-//    private void ponnahdusIkkuna(String viesti, String otsikko) {
-//        JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
-//    }
+    private void ponnahdusIkkuna(String viesti, String otsikko) {
+        JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
+    }
     
     /**
-     * Pääohjelma, joka luo ilmentymän Mastermind-luokasta, eli pelin graafisesta
+     * Pääohjelma, joka luo ilmentymän GUI-luokasta, eli pelin graafisesta
      * käyttöliittymästä, ja asettaa ikkunan näkyville. 
      * Lisäksi pääohjelma asettaa ikkunalle koon ja luo ominaisuuden ikkunan
      * sulkemista varten.
@@ -417,7 +432,7 @@ public class Mastermind extends JFrame {
      */
 
     public static void main(String args[]) {
-        Mastermind ikkuna = new Mastermind();
+        GUI ikkuna = new GUI();
         ikkuna.setTitle("Mastermind");
         ikkuna.pack();
         ikkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

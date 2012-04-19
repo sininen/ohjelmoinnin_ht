@@ -1,18 +1,16 @@
 package sovelluslogiikka;
 
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
- *Luokka Peli käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri. Luokka kokoaa
+ *Luokka Mastermind käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri. Luokka kokoaa
  *yhteen Mastermind-pelissä tarvittavan toiminnallisuuden yllä mainituista luokista.
  *Luokassa on siis samoja metodeita kuin yllä mainituissa luokissa ja lisäksi
  *yhteenkokoavia metodeita pelin toiminnallisuuden avuksi. Pelistä toteutettavan käyttö-
  *liittymän ei tarvitse tuntea kuin tämä luokka.
  * @author Sini
  */
-public class Peli {
-    
+public class Mastermind {
     
     /**
      * ilmentymä luokasta OikeaRivi, ohjelman arpoma oikea rivi
@@ -31,7 +29,7 @@ public class Peli {
      * Konstruktorissa luodaan ilmentymät OikeaRivi, PelaajanRivi ja Laskuri
      * luokista.
      */
-    public Peli() {
+    public Mastermind() {
         arvottuRivi = new OikeaRivi();
         pelaajanRivi = new PelaajanRivi();
         kierrosLaskuri = new Laskuri();
@@ -109,48 +107,4 @@ public class Peli {
         return false;
     }
     
-    /**
-     * Metodi kertoo ponnahdusikkunoin pelin tuloksen, jos peli päättyi.
-     * Eli jos rivissä oli neljä oikein oikealla paikalla, metodi kertoo pelaajan 
-     * voittaneen, ja jos pelaajan arvaama rivi oli kahdeksas, metodi kertoo pelaajan
-     * hävinneen (ellei rivi ollut oikea).
-     * @param oikeillaPaikoilla montako väriä pelaajan rivistä oli oikein oikealla paikalla
-     */
-    public void tarkistaTulos(int oikeillaPaikoilla) {
-        if(oikeillaPaikoilla == 4) {
-            ponnahdusIkkuna("Onneksi olkoon! Voitit pelin! : )", "VOITTO");
-        }
-        else if(kierrosLaskuri.monesko() == 8) {
-           ponnahdusIkkuna("Peli päättyi. \nValitettavasti hävisit tällä kertaa : (", "PELI PÄÄTTYI");
-        }        
-    }
-    
-    /**
-     * Metodi kertoo ponnahdusikkunassa ohjeen pelin pelaamiseen. Ohje koskee osittain
-     * vain graafista käyttöliittymää.
-     */
-
-    public void tulostaOhje() {
-        String viesti = "Mastermind-pelissä on tarkoitus arvailla koneen arpomaa eri \n"
-                + "väreistä koostuvaa riviä. Rivi on neljän värin mittainen ja \n"
-                + "mahdollisia värivaihtoehtoja on kuusi. Arvaa tai päättele värejä \n"
-                + "riviin painelemalla oikeassa reunassa olevia nappuloita. Kun rivissäsi \n"
-                + "on neljä väriä, peli ilmoittaa, kuinka monta väreistä meni oikein oikealle \n"
-                + "paikalle ja kuinka monta väriä on oikein, mutta väärällä paikalla. Sinulla \n"
-                + "on kahdeksan mahdollisuutta arvata oikea rivi. Voitat pelin, mikäli \n"
-                + "arvaat oikean rivin viimeistään kahdeksannella arvauksella.";
-        
-        ponnahdusIkkuna(viesti, "OHJE");
-    }
-    
-    /**
-     * Metodi muodostaa ponnahdusikkunan saamastaan viestistä. Ponnahdusikkunan saa
-     * suljettua OK- tai raksi-painikkeista.
-     * @param viesti Teksti, jonka haluaa näkyvän ponnahdusikkunassa.
-     * @param otsikko Ponnahdusikkunalle otsikko
-     */
-
-    public void ponnahdusIkkuna(String viesti, String otsikko) {
-        JOptionPane.showMessageDialog(null, viesti, otsikko, JOptionPane.PLAIN_MESSAGE);
-    }
 }
