@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Luokassa on metodit oikean rivin tarkistamiseen eli kuinka monta väriä
  * meni oikein oikealle paikalle ja oikein, mutta väärälle paikalle
  * pelaajan rivissä.
- * @author Sini
+ * @author Sini Lehtonen
  */
 
 public class OikeaRivi {
@@ -40,7 +40,7 @@ public class OikeaRivi {
     /**
      * Metodi palauttaa oikean rivin taulukkona.
      * 
-     * @return oikea rivi eli ohjelman arpoma rivi taulukkona
+     * @return oikea rivi eli ohjelman arpoma rivi ArrayList-taulukkona
      */
     public ArrayList<Integer> annaArvottuRivi() {
         return arvottuRivi;

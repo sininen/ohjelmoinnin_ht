@@ -1,4 +1,3 @@
-
 package sovelluslogiikka;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.ArrayList;
  * johon pelaaja arvaa värejä. Värit käsitellään numeroina väliltä 1-6.
  * Riviin voi siis lisätä numeroita ja rivin voi tyhjentää lopuksi. Luokka 
  * tuntee myös laskuri-olion, joka tietää missä kohdassa rivissä ollaan menossa.
- * @author Sini
+ * @author Sini Lehtonen
  */
 
 public class PelaajanRivi {
@@ -50,8 +49,8 @@ public class PelaajanRivi {
     }
     
     /**
-     * Metodi palauttaa pelaajan arvaaman rivin
-     * @return pelaajan rivi taulukkona
+     * Metodi palauttaa pelaajan arvaaman rivin.
+     * @return pelaajan rivi ArrayList-taulukkona
      */
     public ArrayList annaPelaajanRivi() {
         return pelaajanRivi;
@@ -66,7 +65,7 @@ public class PelaajanRivi {
     }
     
     /**
-     * Metodi palauttaa pelaajan rivin tämänhetkisen pituuden
+     * Metodi palauttaa pelaajan rivin tämänhetkisen pituuden.
      * @return pelaajan rivin pituus
      */
     public int pelaajanRivinPituus() {

@@ -1,11 +1,10 @@
-
 package sovelluslogiikka;
 
 /**
  * Luokka käsittää hyvin yksinkertaisen laskurin,
  * jolla voi laskea esim. kierrosten lukumäärää 
  * tai rivin kohtaa, jossa ollaan menossa.
- * @author Sini
+ * @author Sini Lehtonen
  */
 
 public class Laskuri {

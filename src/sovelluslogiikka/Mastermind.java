@@ -3,12 +3,12 @@ package sovelluslogiikka;
 import java.util.ArrayList;
 
 /**
- *Luokka Mastermind käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri. Luokka kokoaa
- *yhteen Mastermind-pelissä tarvittavan toiminnallisuuden yllä mainituista luokista.
- *Luokassa on siis samoja metodeita kuin yllä mainituissa luokissa ja lisäksi
- *yhteenkokoavia metodeita pelin toiminnallisuuden avuksi. Pelistä toteutettavan käyttö-
- *liittymän ei tarvitse tuntea kuin tämä luokka.
- * @author Sini
+ * Luokka Mastermind käyttää luokkia OikeaRivi, PelaajanRivi ja Laskuri. Luokka kokoaa
+ * yhteen Mastermind-pelissä tarvittavan toiminnallisuuden yllä mainituista luokista.
+ * Luokassa on siis samoja metodeita kuin yllä mainituissa luokissa ja lisäksi
+ * yhteenkokoavia metodeita pelin toiminnallisuuden avuksi. Pelistä toteutettavan käyttö-
+ * liittymän ei tarvitse tuntea kuin tämä luokka.
+ * @author Sini Lehtonen
  */
 public class Mastermind {
     
@@ -47,7 +47,7 @@ public class Mastermind {
     
     /**
      * Metodi kertoo millä kierroksella pelissä ollaan menossa. Metodi käyttää
-     * Laskurin monesko-metodia.
+     * Laskuri-luokan monesko-metodia.
      * @return monennellako kierroksella pelissä ollaan menossa
      */
     public int moneskoKierros() {
@@ -56,7 +56,7 @@ public class Mastermind {
     
     /**
      * Metodi palauttaa arvotun eli oikean rivin taulukkona.
-     * @return oikea rivi eli ohjelman arpoma rivi taulukkona
+     * @return oikea rivi eli ohjelman arpoma rivi ArrayList-taulukkona
      */ 
     public ArrayList<Integer> annaArvottuRivi() {
         return arvottuRivi.annaArvottuRivi();
@@ -71,8 +71,8 @@ public class Mastermind {
      * Jos sarake ei ollut viimeinen, metodi palauttaa taulukon, jonka ensimmäinen
      * alkio on -1.
      * @param sarake kertoo, monenneksi uusi väri lisättiin pelaajan riviin
-     * @return taulukko, jonka ensimmäisessa paikassa on oikeat oikealla paikalla
-     * ja toisessa paikassa oikeat väärällä paikalla
+     * @return taulukko, jonka ensimmäisessa paikassa on oikeiden oikealla paikalla
+     * ja toisessa paikassa oikeiden väärällä paikalla lukumäärä
      */
 
     public int[] toimi(int sarake) {

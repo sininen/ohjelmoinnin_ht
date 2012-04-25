@@ -4,6 +4,7 @@ package gui;
  * Tämä luokka on graafinen käyttöliittymä Mastermind-pelille.
  * Käyttöliittymä käyttää luokkaa Mastermind, joka sisältää tarvittavat metodit 
  * sovelluslogiikasta.
+ * @author Sini Lehtonen
  */
 import sovelluslogiikka.Mastermind;
 import javax.swing.*;
@@ -243,10 +244,11 @@ public class GUI extends JFrame {
     
     /**
      * Metodi luo tapahtumankuuntelijan parametrina saamalleen nappulalle. Lisäksi
-     * metodi kutsuu Mastermind-luokan lisaaVari metodia, joka lisää värin pelaajan riviin, 
-     * aina nappulaa painettaessa. Metodi vaihtaa pelaajanArvaukset matriisiin lisättävän 
-     * värin mukaisen taustavärin oikealle kohdalle ja kutsuu toimi metodia, 
-     * joka huolehtii jonkin nappulan painamisesta aiheutuvasta muusta toiminnasta.
+     * metodi asettaa tapahtumankuuntelijan kutsumaan Mastermind-luokan lisaaVari 
+     * metodia, joka lisää värin pelaajan riviin aina nappulaa painettaessa. 
+     * Metodi vaihtaa pelaajanArvaukset matriisiin lisättävän värin mukaisen 
+     * taustavärin oikealle kohdalle ja kutsuu toimi metodia, joka huolehtii 
+     * jonkin nappulan painamisesta aiheutuvasta muusta toiminnasta.
      * 
      * @param nappula Nappula, jolle tapahtumankuuntelija luodaan
      * @param variNro numero, jota nappulan väri vastaa
@@ -315,7 +317,7 @@ public class GUI extends JFrame {
      * oikealle paikalle ja toinen alkio on luku, kuinka monta väriä meni oikein
      * mutta väärälle paikalle. Metodi asettaa nämä tulokset näkyville montakoOikein
      * -kenttään. Jos taulukon ensimmäinen alkio on -1, lisätty väri
-     * ei mennyt pelaajan rivin viimeiselle paikalle, tällöin tulosta ei ilmoiteta.
+     * ei mennyt pelaajan rivin viimeiselle paikalle. Tällöin tulosta ei ilmoiteta.
      * Lisäksi metodi tarkistaa päättyikö peli kutsumalla Mastermind-luokan paattyikoPeli
      * -metodia. Jos päättyi, metodi kutsuu metodeita oikean rivin tulostamiseen, 
      * nappuloiden asettamiseen toimimattomiksi ja tarkistaTulos

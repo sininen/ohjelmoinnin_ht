@@ -4,6 +4,7 @@ package gui;
  * Luokka Main sisältää pääohjelman, 
  * jolla peliä voi testata tekstiversiona. Tässä versiossa 
  * värit ovat numeroita väliltä 1-6.
+ * @author Sini Lehtonen
  */
 
 import java.util.Scanner;
@@ -43,8 +44,6 @@ public class Main {
             
             kierrosLaskuri.etene();
             pelaajanRivi.tyhjennaPelaajanRivi();
-            
-            System.out.println("Oikea rivi: " + peli.tulostaOikeaRivi());
             
         }
         
